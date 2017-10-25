@@ -1,17 +1,20 @@
 package virtualpetsamok;
 
-public class OrganicCat extends VirtualPet implements OrganicInterface {
+public class RoboCat extends VirtualPet implements RoboInterface {
 
-	private int hunger;
-	private int thirst;
+	private int oilLevel;
 
-	// Constructor
-	public OrganicCat(String name, String description, int happiness, int health, int hunger, int thirst,
-			boolean pooedInCage) {
+	public RoboCat(String name, String description, int happiness, int health, int walkDesire, boolean pooedInCage,
+			int oilLevel) {
 		super(name, description, happiness, health, pooedInCage);
-		this.hunger = hunger;
-		this.thirst = thirst;
-		description = "Organic Cat";
+		this.oilLevel = oilLevel;
+		oilLevel = 10;
+		description = "Robot Cat";
+	}
+
+	// Getters
+	public int getOilLevel() {
+		return oilLevel;
 	}
 
 	// Setters
@@ -41,7 +44,6 @@ public class OrganicCat extends VirtualPet implements OrganicInterface {
 	}
 
 	// Getters
-
 	@Override
 	public String getName() {
 		return name;
@@ -64,18 +66,8 @@ public class OrganicCat extends VirtualPet implements OrganicInterface {
 
 	// Instance variable threshold checks
 	@Override
-	public boolean checkHungry() {
-		if (hunger >= 5) {
-			return true;
-
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean checkThirsty() {
-		if (thirst >= 5) {
+	public boolean checkNeedsOil() {
+		if (oilLevel <= 8) {
 			return true;
 		} else {
 			return false;
@@ -91,28 +83,28 @@ public class OrganicCat extends VirtualPet implements OrganicInterface {
 		}
 	}
 
+	@Override
+	public boolean checkHungry() {
+		return false;
+	}
+
+	@Override
+	public boolean checkThirsty() {
+		return false;
+	}
+
 	// Activity Methods (effect instance variables)
 	@Override
-	public void feed() {
-		if (hunger >= 5) {
-			hunger -= 5;
-		} else {
-			hunger = 0;
-		}
+	public void oil() {
+		oilLevel += 5;
+	}
 
+	@Override
+	public void feed() {
 	}
 
 	@Override
 	public void giveWater() {
-		if (thirst >= 5) {
-			thirst -= 5;
-		} else {
-			thirst = 0;
-		}
-	}
-
-	@Override
-	public void oil() {
 	}
 
 	@Override
@@ -120,15 +112,11 @@ public class OrganicCat extends VirtualPet implements OrganicInterface {
 		happiness = happiness++;
 	}
 
-	// Tick override
+	// Tick method override
 	@Override
 	public void tick() {
-		hunger += 2;
-		thirst += 2;
-		if (hunger >= 10) {
-			happiness -= 1;
-		}
-		if (thirst >= 10) {
+		oilLevel -= 1;
+		if (oilLevel <= 5) {
 			happiness -= 1;
 		}
 		if (happiness <= 10) {
@@ -138,13 +126,8 @@ public class OrganicCat extends VirtualPet implements OrganicInterface {
 
 	@Override
 	public String toString() {
-		return "\nPet Name: \t " + name + "\nDescription: \t" + description + "\nHunger: \t" + hunger + "\nThirst: \t"
-				+ thirst + "\nHappiness: \t" + happiness + "\nHealth: \t" + health + "\n";
-	}
-
-	@Override
-	public boolean checkNeedsOil() {
-		return false;
+		return "\nPet Name:\t " + name + "\nDescription: \t" + description + "\nHappiness: \t" + happiness
+				+ "\nHealth: \t" + health + "\nOil Level: \t" + oilLevel + "\n";
 	}
 
 }
